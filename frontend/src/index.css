@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import "tailwindcss";
+
+/* Add cursor pointer to buttons by default - this is coming from tailwind docs */
+@layer base {
+  :root,
+  [data-mode="light"] {
+    --text-primary: #0b1b3a;
+    --text-body: #1f2e4a;
+    --text-muted: #5b6b85;
+    --text-subtle: #6f7f99;
+    --text-soft: #415574;
+
+    --brand-primary: #1d4ed8;
+    --brand-primary-2: #2563eb;
+    --brand-primary-3: #1e40af;
+    --brand-primary-4: #1f4fd1;
+    --brand-primary-5: #2147b5;
+    --brand-secondary: #3b82f6;
+    --brand-accent: #0ea5e9;
+    --brand-highlight: #10b981;
+    --brand-top: #0f2f73;
+    --brand-mid: #3b82f6;
+
+    --line: #d6deea;
+    --line-strong: #c1ccdd;
+    --input-border: #c9d6e6;
+    --input-icon: #7b8db0;
+    --input-placeholder: #8ea0bf;
+    --check-border: #aebbd4;
+
+    --surface: #ffffff;
+    --surface-soft: #f6f8fc;
+    --surface-soft-2: #f0f4fb;
+    --surface-soft-3: #e7eef9;
+    --surface-soft-4: #edf2fb;
+    --app-bg-start: #f7f9fc;
+    --app-bg-mid: #f7f9fc;
+    --app-bg-end: #f7f9fc;
+    --blob-1: #9bbcff;
+    --blob-2: #b6d7ff;
+  }
+
+  [data-mode="dark"] {
+    --text-primary: #e7ecf7;
+    --text-body: #cfd7e6;
+    --text-muted: #9aa9c4;
+    --text-subtle: #8091b2;
+    --text-soft: #b0bed8;
+
+    --brand-primary: #4f83ff;
+    --brand-primary-2: #3b6fff;
+    --brand-primary-3: #6a95ff;
+    --brand-primary-4: #5a87ff;
+    --brand-primary-5: #3d6fe6;
+    --brand-secondary: #60a5fa;
+    --brand-accent: #38bdf8;
+    --brand-highlight: #34d399;
+    --brand-top: #c5d4ff;
+    --brand-mid: #78b8ff;
+
+    --line: #233149;
+    --line-strong: #2f3f5e;
+    --input-border: #2a3a57;
+    --input-icon: #8ca0c5;
+    --input-placeholder: #7d91b8;
+    --check-border: #4f6290;
+
+    --surface: #0f182b;
+    --surface-soft: #121d35;
+    --surface-soft-2: #16213d;
+    --surface-soft-3: #1a2747;
+    --surface-soft-4: #1e2b52;
+    --app-bg-start: #0b1220;
+    --app-bg-mid: #0b1220;
+    --app-bg-end: #0b1220;
+    --blob-1: #28427d;
+    --blob-2: #2b5a7f;
+  }
+
+  body {
+    font-family: "Manrope", sans-serif;
+    color: var(--text-primary);
+    background: var(--app-bg-start);
+  }
+
+  h1,
+  h2,
+  h3,
+  .display-font {
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 24px -18px rgba(15, 34, 77, 0.4);
+  }
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+}
+
+.fade-up {
+  animation: fadeUp 0.55s ease-out both;
+}
