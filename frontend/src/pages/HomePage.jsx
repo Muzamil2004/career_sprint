@@ -117,18 +117,18 @@ function HomePage() {
 
         <div className="space-y-4">
           <img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+            src="/landing-collaboration.jpg"
             alt="Interview collaboration"
             className="h-72 w-full rounded-3xl object-cover shadow-2xl"
           />
           <div className="grid grid-cols-2 gap-4">
             <img
-              src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80"
+              src="/landing-coding.jpg"
               alt="Coding interview practice"
               className="h-44 w-full rounded-2xl object-cover shadow-lg"
             />
             <img
-              src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80"
+              src="/landing-notes.jpg"
               alt="Technical interview prep notes"
               className="h-44 w-full rounded-2xl object-cover shadow-lg"
             />
