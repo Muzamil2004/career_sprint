@@ -71,7 +71,7 @@ export async function createSession(req, res) {
       problem,
       difficulty,
       selectionMode = "ai_random",
-      focus = "situational",
+      focus = "coding",
       minDifficulty = "medium",
       enforceFullscreen = true,
       blockClipboard = true,
@@ -79,9 +79,17 @@ export async function createSession(req, res) {
     const userId = req.user._id;
 
     const allowedDifficulties = new Set(["easy", "medium", "hard"]);
-    const allowedFocuses = new Set(["situational", "system-design-lite", "algorithms"]);
+    const allowedFocuses = new Set([
+      "coding",
+      "system-design",
+      "aptitude",
+      "verbal",
+      "situational",
+      "system-design-lite",
+      "algorithms",
+    ]);
 
-    const safeFocus = allowedFocuses.has(focus) ? focus : "situational";
+    const safeFocus = allowedFocuses.has(focus) ? focus : "coding";
     const isAiRandom = selectionMode === "ai_random";
 
     let finalProblem = problem;

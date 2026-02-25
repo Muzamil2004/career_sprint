@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Navbar from "../components/Navbar";
 import { useMyRecentSessions } from "../hooks/useSessions";
 import { useAuth } from "../context/AuthContext";
+import { PROBLEMS } from "../data/problems";
 
 function toDateKey(value) {
   const date = new Date(value);
@@ -16,7 +17,16 @@ function ProfilePage() {
   const { user } = useAuth();
   const { data } = useMyRecentSessions();
 
-  const { accuracy, problemsSolved, solvedStreakDays, solvedSessions } = useMemo(() => {
+  const {
+    accuracy,
+    problemsSolved,
+    solvedStreakDays,
+    solvedSessions,
+    codingSolved,
+    aptitudeSolved,
+    verbalSolved,
+    readiness,
+  } = useMemo(() => {
     const sessions = data?.sessions || [];
 
     let totalAttempts = 0;
@@ -46,13 +56,67 @@ function ProfilePage() {
     }
 
     const calculatedAccuracy =
-      totalAttempts > 0 ? Math.round((totalSuccessfulRuns / totalAttempts) * 100) : 0;
+      totalProblemsSolved > 0 && totalAttempts > 0
+        ? Math.round((totalSuccessfulRuns / totalAttempts) * 100)
+        : 0;
+
+    const allProblems = Object.values(PROBLEMS);
+    const codingProblemIds = new Set(
+      allProblems
+        .filter(
+          (problem) =>
+            !problem.category.toLowerCase().includes("aptitude") &&
+            !problem.category.toLowerCase().includes("verbal")
+        )
+        .map((problem) => problem.id)
+    );
+    const aptitudeProblemIds = new Set(
+      allProblems
+        .filter((problem) => problem.category.toLowerCase().includes("aptitude"))
+        .map((problem) => problem.id)
+    );
+    const verbalProblemIds = new Set(
+      allProblems
+        .filter((problem) => problem.category.toLowerCase().includes("verbal"))
+        .map((problem) => problem.id)
+    );
+
+    let solvedProblemIds = [];
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem("solved-problem-ids");
+        const parsed = raw ? JSON.parse(raw) : [];
+        solvedProblemIds = Array.isArray(parsed) ? parsed : [];
+      } catch {
+        solvedProblemIds = [];
+      }
+    }
+
+    const solvedIdsSet = new Set(solvedProblemIds);
+    const solvedCodingCount = [...codingProblemIds].filter((id) => solvedIdsSet.has(id)).length;
+    const solvedAptitudeCount = [...aptitudeProblemIds].filter((id) => solvedIdsSet.has(id)).length;
+    const solvedVerbalCount = [...verbalProblemIds].filter((id) => solvedIdsSet.has(id)).length;
+
+    const solvedTrackableCount = solvedCodingCount + solvedAptitudeCount + solvedVerbalCount;
+    const totalTrackableCount =
+      codingProblemIds.size + aptitudeProblemIds.size + verbalProblemIds.size;
+    const solvedCoverage = totalTrackableCount
+      ? Math.round((solvedTrackableCount / totalTrackableCount) * 100)
+      : 0;
+    const streakScore = Math.min(100, Math.round((streak / 14) * 100));
+    const interviewReadiness = Math.round(
+      calculatedAccuracy * 0.6 + solvedCoverage * 0.3 + streakScore * 0.1
+    );
 
     return {
       accuracy: calculatedAccuracy,
       problemsSolved: totalProblemsSolved,
       solvedStreakDays: streak,
       solvedSessions: sessions.length,
+      codingSolved: solvedCodingCount,
+      aptitudeSolved: solvedAptitudeCount,
+      verbalSolved: solvedVerbalCount,
+      readiness: interviewReadiness,
     };
   }, [data]);
 
@@ -97,16 +161,24 @@ function ProfilePage() {
               </p>
               <div className="mt-3 flex items-center gap-4">
                 <div
-                  className="relative h-20 w-20 rounded-full"
+                  className="size-20 shrink-0 rounded-full border border-[var(--line)]"
                   style={{
                     background: `conic-gradient(var(--brand-primary) ${accuracy}%, var(--surface-soft-3) 0)`,
                   }}
-                >
-                  <div className="absolute inset-2 flex items-center justify-center rounded-full bg-[var(--surface)] text-sm font-bold text-[var(--text-primary)]">
-                    {accuracy}%
+                />
+                <div>
+                  <p className="text-xl font-bold text-[var(--text-primary)]">{accuracy}%</p>
+                  <div className="mt-2 space-y-1 text-xs text-[var(--text-muted)]">
+                    <p className="flex items-center gap-2">
+                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-[var(--brand-primary)]" />
+                      Correct runs
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-[var(--surface-soft-3)]" />
+                      Remaining
+                    </p>
                   </div>
                 </div>
-                <p className="text-sm text-[var(--text-muted)]">Based on your recent solved attempts.</p>
               </div>
             </div>
 
@@ -129,6 +201,51 @@ function ProfilePage() {
               </p>
               <p className="mt-1 text-sm text-[var(--text-muted)]">
                 Consecutive days with at least one solved problem
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                Interview Readiness
+              </p>
+              <p className="text-sm font-semibold text-[var(--text-primary)]">{readiness}%</p>
+            </div>
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--surface-soft-3)]">
+              <div
+                className="h-full rounded-full bg-[var(--brand-primary)] transition-all"
+                style={{ width: `${readiness}%` }}
+              />
+            </div>
+            <p className="mt-2 text-sm text-[var(--text-muted)]">
+              Based on accuracy, solved coverage, and current streak.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                Coding Solved
+              </p>
+              <p className="mt-2 display-font text-3xl font-bold text-[var(--text-primary)]">
+                {codingSolved}
+              </p>
+            </div>
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                Aptitude Solved
+              </p>
+              <p className="mt-2 display-font text-3xl font-bold text-[var(--text-primary)]">
+                {aptitudeSolved}
+              </p>
+            </div>
+            <div className="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                Verbal Solved
+              </p>
+              <p className="mt-2 display-font text-3xl font-bold text-[var(--text-primary)]">
+                {verbalSolved}
               </p>
             </div>
           </div>

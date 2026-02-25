@@ -12,6 +12,7 @@ import SessionPage from "./pages/SessionPage";
 import AIFeedbackPage from "./pages/AIFeedbackPage";
 import SessionSummaryPopupPage from "./pages/SessionSummaryPopupPage";
 import ProfilePage from "./pages/ProfilePage";
+import ResourceQuestionsPage from "./pages/ResourceQuestionsPage";
 
 function AppContent() {
   const { isSignedIn, isLoading } = useAuth();
@@ -60,6 +61,10 @@ function AppContent() {
         <Route
           path="/ai-feedback"
           element={isSignedIn ? <AIFeedbackPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/resources/:topic"
+          element={isSignedIn ? <ResourceQuestionsPage /> : <Navigate to={"/login"} />}
         />
       </Routes>
 

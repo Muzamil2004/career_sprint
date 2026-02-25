@@ -2254,6 +2254,480 @@ class Solution {
       java: "2",
     },
   },
+
+  "system-design-rate-limiter-basics": {
+    id: "system-design-rate-limiter-basics",
+    title: "Design a Basic Rate Limiter",
+    difficulty: "Easy",
+    category: "System Design",
+    description: {
+      text: "Design a per-user fixed-window rate limiter that allows at most N requests per minute.",
+      notes: [
+        "Focus on API contract, data model, and decision flow for allow/deny.",
+        "Assume a single region and moderate traffic."
+      ]
+    },
+    examples: [
+      {
+        input: "N = 3, requests at t=1s,10s,20s,30s for same user",
+        output: "ALLOW, ALLOW, ALLOW, DENY",
+        explanation: "The 4th request is in the same minute window."
+      }
+    ],
+    constraints: [
+      "1 <= N <= 1000",
+      "Time is measured in seconds",
+      "Decision latency should be near O(1)"
+    ],
+    starterCode: {
+      javascript: `function shouldAllow(requestTimes, limitPerMinute) {
+  // Return comma-separated ALLOW/DENY decisions for the request sequence.
+  // Write your solution here.
+}
+
+console.log(shouldAllow([1, 10, 20, 30], 3)); // Expected: ALLOW,ALLOW,ALLOW,DENY`,
+      python: `def should_allow(request_times, limit_per_minute):
+    # Return comma-separated ALLOW/DENY decisions.
+    # Write your solution here.
+    pass
+
+print(should_allow([1, 10, 20, 30], 3))  # Expected: ALLOW,ALLOW,ALLOW,DENY`,
+      java: `class Solution {
+    public static String shouldAllow(int[] requestTimes, int limitPerMinute) {
+        // Return comma-separated ALLOW/DENY decisions.
+        // Write your solution here.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(shouldAllow(new int[]{1, 10, 20, 30}, 3)); // Expected: ALLOW,ALLOW,ALLOW,DENY
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "ALLOW,ALLOW,ALLOW,DENY",
+      python: "ALLOW,ALLOW,ALLOW,DENY",
+      java: "ALLOW,ALLOW,ALLOW,DENY",
+    },
+  },
+
+  "system-design-chat-service-components": {
+    id: "system-design-chat-service-components",
+    title: "Design a Real-Time Chat Service",
+    difficulty: "Medium",
+    category: "System Design",
+    description: {
+      text: "Design the high-level architecture for a chat system supporting one-to-one messaging with online/offline delivery.",
+      notes: [
+        "Include core components, message flow, and consistency strategy.",
+        "Address presence, retry, and message ordering at a high level."
+      ]
+    },
+    examples: [
+      {
+        input: "User A sends message to offline User B",
+        output: "Persist -> enqueue -> deliver on reconnect",
+        explanation: "Messages should not be lost when receiver is offline."
+      }
+    ],
+    constraints: [
+      "Support millions of users",
+      "Low latency for online users",
+      "At-least-once delivery with idempotency"
+    ],
+    starterCode: {
+      javascript: `function designChatService() {
+  // Return a comma-separated list of required core components.
+  // Write your answer in deterministic order.
+}
+
+console.log(designChatService()); // Expected: API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service`,
+      python: `def design_chat_service():
+    # Return required core components in comma-separated deterministic order.
+    # Write your solution here.
+    pass
+
+print(design_chat_service())  # Expected: API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service`,
+      java: `class Solution {
+    public static String designChatService() {
+        // Return required core components in comma-separated deterministic order.
+        // Write your solution here.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(designChatService()); // Expected: API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service",
+      python: "API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service",
+      java: "API Gateway,Auth Service,WebSocket Gateway,Message Service,Message Store,Queue,Presence Service",
+    },
+  },
+
+  "system-design-global-file-storage-tradeoffs": {
+    id: "system-design-global-file-storage-tradeoffs",
+    title: "Design a Global File Storage Service",
+    difficulty: "Hard",
+    category: "System Design",
+    description: {
+      text: "Design a distributed file storage system with upload/download APIs, metadata indexing, and multi-region replication.",
+      notes: [
+        "Focus on consistency vs availability tradeoffs and replication strategy.",
+        "Discuss hot object caching and presigned URL flow."
+      ]
+    },
+    examples: [
+      {
+        input: "Upload then immediate read in another region",
+        output: "Serve with eventual consistency fallback strategy",
+        explanation: "Reads may see stale replicas without strong global consensus."
+      }
+    ],
+    constraints: [
+      "Object size: 1 KB to 5 GB",
+      "Durability target: 11 nines",
+      "Need region-level disaster recovery"
+    ],
+    starterCode: {
+      javascript: `function pickReplicationModel() {
+  // Return either STRONG or EVENTUAL for cross-region object replication.
+  // For this prompt, prefer lower write latency and high availability.
+}
+
+console.log(pickReplicationModel()); // Expected: EVENTUAL`,
+      python: `def pick_replication_model():
+    # Return STRONG or EVENTUAL.
+    # For this prompt, prefer lower write latency and high availability.
+    pass
+
+print(pick_replication_model())  # Expected: EVENTUAL`,
+      java: `class Solution {
+    public static String pickReplicationModel() {
+        // Return STRONG or EVENTUAL.
+        // For this prompt, prefer lower write latency and high availability.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(pickReplicationModel()); // Expected: EVENTUAL
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "EVENTUAL",
+      python: "EVENTUAL",
+      java: "EVENTUAL",
+    },
+  },
+
+  "aptitude-percentage-change-basics": {
+    id: "aptitude-percentage-change-basics",
+    title: "Percentage Increase",
+    difficulty: "Easy",
+    category: "Aptitude",
+    description: {
+      text: "A value increases from 80 to 100. Find the percentage increase.",
+      notes: [
+        "Use formula: ((new - old) / old) * 100."
+      ]
+    },
+    examples: [
+      {
+        input: "old = 80, new = 100",
+        output: "25",
+        explanation: "(20/80)*100 = 25%"
+      }
+    ],
+    constraints: [
+      "All inputs are positive integers",
+      "Return only numeric percentage value"
+    ],
+    starterCode: {
+      javascript: `function percentageIncrease(oldValue, newValue) {
+  // Write your solution here.
+}
+
+console.log(percentageIncrease(80, 100)); // Expected: 25`,
+      python: `def percentage_increase(old_value, new_value):
+    # Write your solution here.
+    pass
+
+print(percentage_increase(80, 100))  # Expected: 25`,
+      java: `class Solution {
+    public static int percentageIncrease(int oldValue, int newValue) {
+        // Write your solution here.
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(percentageIncrease(80, 100)); // Expected: 25
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "25",
+      python: "25",
+      java: "25",
+    },
+  },
+
+  "aptitude-time-work-collaboration": {
+    id: "aptitude-time-work-collaboration",
+    title: "Time and Work Collaboration",
+    difficulty: "Medium",
+    category: "Aptitude",
+    description: {
+      text: "A can finish a task in 10 days, B in 15 days. In how many days can they finish together?",
+      notes: [
+        "Combined rate = individual rates sum."
+      ]
+    },
+    examples: [
+      {
+        input: "A=10 days, B=15 days",
+        output: "6",
+        explanation: "Rate = 1/10 + 1/15 = 1/6 task/day."
+      }
+    ],
+    constraints: [
+      "1 <= days <= 1000",
+      "Return rounded integer when exact integer exists"
+    ],
+    starterCode: {
+      javascript: `function daysTogether(aDays, bDays) {
+  // Write your solution here.
+}
+
+console.log(daysTogether(10, 15)); // Expected: 6`,
+      python: `def days_together(a_days, b_days):
+    # Write your solution here.
+    pass
+
+print(days_together(10, 15))  # Expected: 6`,
+      java: `class Solution {
+    public static int daysTogether(int aDays, int bDays) {
+        // Write your solution here.
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(daysTogether(10, 15)); // Expected: 6
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "6",
+      python: "6",
+      java: "6",
+    },
+  },
+
+  "aptitude-mixture-alligation": {
+    id: "aptitude-mixture-alligation",
+    title: "Mixture and Alligation",
+    difficulty: "Hard",
+    category: "Aptitude",
+    description: {
+      text: "A 30% solution is mixed with a 50% solution to obtain 40% solution. Find the ratio of quantities (30% : 50%).",
+      notes: [
+        "Use alligation: difference from mean gives inverse ratio."
+      ]
+    },
+    examples: [
+      {
+        input: "30%, 50%, target 40%",
+        output: "1:1",
+        explanation: "Equal distance from target means equal quantities."
+      }
+    ],
+    constraints: [
+      "Concentrations are between 0 and 100",
+      "Return ratio in simplest form"
+    ],
+    starterCode: {
+      javascript: `function alligationRatio(low, high, target) {
+  // Return ratio as string "a:b".
+  // Write your solution here.
+}
+
+console.log(alligationRatio(30, 50, 40)); // Expected: 1:1`,
+      python: `def alligation_ratio(low, high, target):
+    # Return ratio as "a:b".
+    # Write your solution here.
+    pass
+
+print(alligation_ratio(30, 50, 40))  # Expected: 1:1`,
+      java: `class Solution {
+    public static String alligationRatio(int low, int high, int target) {
+        // Return ratio as "a:b".
+        // Write your solution here.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(alligationRatio(30, 50, 40)); // Expected: 1:1
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "1:1",
+      python: "1:1",
+      java: "1:1",
+    },
+  },
+
+  "verbal-synonym-selection": {
+    id: "verbal-synonym-selection",
+    title: "Choose the Closest Synonym",
+    difficulty: "Easy",
+    category: "Verbal",
+    description: {
+      text: "Choose the closest synonym of the word 'Concise'.",
+      notes: [
+        "Options: (A) Lengthy (B) Brief (C) Noisy (D) Fragile"
+      ]
+    },
+    examples: [
+      {
+        input: "Concise",
+        output: "Brief",
+        explanation: "Concise means short and clear."
+      }
+    ],
+    constraints: [
+      "Answer with exact option word"
+    ],
+    starterCode: {
+      javascript: `function answerSynonym() {
+  // Return the correct option word.
+}
+
+console.log(answerSynonym()); // Expected: Brief`,
+      python: `def answer_synonym():
+    # Return the correct option word.
+    pass
+
+print(answer_synonym())  # Expected: Brief`,
+      java: `class Solution {
+    public static String answerSynonym() {
+        // Return the correct option word.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(answerSynonym()); // Expected: Brief
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "Brief",
+      python: "Brief",
+      java: "Brief",
+    },
+  },
+
+  "verbal-sentence-correction": {
+    id: "verbal-sentence-correction",
+    title: "Sentence Correction",
+    difficulty: "Medium",
+    category: "Verbal",
+    description: {
+      text: "Correct the sentence: 'Each of the players have arrived.'",
+      notes: [
+        "Subject 'Each' is singular, so verb must be singular."
+      ]
+    },
+    examples: [
+      {
+        input: "Each of the players have arrived.",
+        output: "Each of the players has arrived.",
+        explanation: "Singular subject takes singular verb."
+      }
+    ],
+    constraints: [
+      "Return corrected sentence exactly"
+    ],
+    starterCode: {
+      javascript: `function correctSentence() {
+  // Return the corrected sentence.
+}
+
+console.log(correctSentence()); // Expected: Each of the players has arrived.`,
+      python: `def correct_sentence():
+    # Return the corrected sentence.
+    pass
+
+print(correct_sentence())  # Expected: Each of the players has arrived.`,
+      java: `class Solution {
+    public static String correctSentence() {
+        // Return the corrected sentence.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(correctSentence()); // Expected: Each of the players has arrived.
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "Each of the players has arrived.",
+      python: "Each of the players has arrived.",
+      java: "Each of the players has arrived.",
+    },
+  },
+
+  "verbal-critical-reasoning-assumption": {
+    id: "verbal-critical-reasoning-assumption",
+    title: "Critical Reasoning: Find the Assumption",
+    difficulty: "Hard",
+    category: "Verbal",
+    description: {
+      text: "Argument: 'Our support tickets dropped after launching the new UI. Therefore, the new UI is easier for users.' Identify the key assumption.",
+      notes: [
+        "Look for what must be true for the conclusion to hold."
+      ]
+    },
+    examples: [
+      {
+        input: "Ticket volume dropped after UI launch",
+        output: "No other major change reduced tickets",
+        explanation: "Without this assumption, causation is not justified."
+      }
+    ],
+    constraints: [
+      "Return concise assumption text"
+    ],
+    starterCode: {
+      javascript: `function keyAssumption() {
+  // Return the key assumption.
+}
+
+console.log(keyAssumption()); // Expected: No other major change reduced tickets`,
+      python: `def key_assumption():
+    # Return the key assumption.
+    pass
+
+print(key_assumption())  # Expected: No other major change reduced tickets`,
+      java: `class Solution {
+    public static String keyAssumption() {
+        // Return the key assumption.
+        return "";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(keyAssumption()); // Expected: No other major change reduced tickets
+    }
+}`,
+    },
+    expectedOutput: {
+      javascript: "No other major change reduced tickets",
+      python: "No other major change reduced tickets",
+      java: "No other major change reduced tickets",
+    },
+  },
 };
 
 export const LANGUAGE_CONFIG = {

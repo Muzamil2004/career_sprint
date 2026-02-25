@@ -60,6 +60,7 @@ function SessionPage() {
   );
 
   const interviewConfig = session?.interviewConfig || {};
+  const sessionFocus = interviewConfig.focus || "coding";
   const shouldBlockClipboard = interviewConfig.blockClipboard !== false;
   const shouldEnforceFullscreen = interviewConfig.enforceFullscreen !== false;
   const shouldEnableEyeProctoring = shouldEnforceFullscreen;
@@ -88,6 +89,19 @@ function SessionPage() {
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
   const expectedOutput = problemData?.expectedOutput?.[selectedLanguage];
+
+  const buildFeedbackPrompt = (focus) => {
+    if (focus === "system-design") {
+      return "Give concise interview feedback for a system design round using the session context. Provide exactly 4 bullet tips and then a short architecture-improvement analysis with tradeoffs, scaling, and reliability notes. Format exactly as:\nTIPS:\n- ...\n- ...\n- ...\n- ...\nANALYSIS:\n<2-4 short paragraphs>";
+    }
+    if (focus === "aptitude") {
+      return "Give concise interview feedback for an aptitude round using the session context. Provide exactly 4 bullet tips and then a short improvement analysis focused on accuracy, speed, and calculation strategy. Format exactly as:\nTIPS:\n- ...\n- ...\n- ...\n- ...\nANALYSIS:\n<2-4 short paragraphs>";
+    }
+    if (focus === "verbal") {
+      return "Give concise interview feedback for a verbal round using the session context. Provide exactly 4 bullet tips and then a short improvement analysis focused on grammar, clarity, and communication quality. Format exactly as:\nTIPS:\n- ...\n- ...\n- ...\n- ...\nANALYSIS:\n<2-4 short paragraphs>";
+    }
+    return "Give concise interview tips based on this session summary. Keep it short and actionable with 4 bullet points. Then provide a detailed optimization analysis explaining how to improve the time complexity for this problem. Format exactly as:\nTIPS:\n- ...\n- ...\n- ...\n- ...\nANALYSIS:\n<2-4 short paragraphs>";
+  };
 
   // auto-join session if user is not already a participant and not the host
   useEffect(() => {
@@ -328,8 +342,7 @@ function SessionPage() {
 
     try {
       const response = await aiApi.getFeedback({
-        prompt:
-          "Give concise interview tips based on this session summary. Keep it short and actionable with 4 bullet points. Then provide a detailed optimization analysis explaining how to improve the time complexity for this problem. Format exactly as:\nTIPS:\n- ...\n- ...\n- ...\n- ...\nANALYSIS:\n<2-4 short paragraphs>",
+        prompt: buildFeedbackPrompt(sessionFocus),
         problem: session?.problem || "",
         language: selectedLanguage,
         code,

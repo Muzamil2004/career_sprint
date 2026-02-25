@@ -37,6 +37,25 @@ const checkIfTestsPassed = (actualOutput, expectedOutput) => {
   return normalizedActual == normalizedExpected;
 };
 
+const SOLVED_PROBLEMS_STORAGE_KEY = "solved-problem-ids";
+
+const markProblemAsSolved = (problemId) => {
+  if (!problemId || typeof window === "undefined") return;
+
+  try {
+    const raw = localStorage.getItem(SOLVED_PROBLEMS_STORAGE_KEY);
+    const solvedIds = raw ? JSON.parse(raw) : [];
+    const nextIds = Array.isArray(solvedIds) ? solvedIds : [];
+
+    if (!nextIds.includes(problemId)) {
+      nextIds.push(problemId);
+      localStorage.setItem(SOLVED_PROBLEMS_STORAGE_KEY, JSON.stringify(nextIds));
+    }
+  } catch {
+    // Ignore storage issues so solving flow is not blocked.
+  }
+};
+
 function ProblemPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -109,6 +128,7 @@ function ProblemPage() {
       setTestsPassed(testsPassed);
 
       if (testsPassed) {
+        markProblemAsSolved(currentProblem.id);
         if (showFeedback) {
           triggerConfetti();
           toast.success("All tests passed! Great job!");

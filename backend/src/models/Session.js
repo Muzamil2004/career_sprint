@@ -18,12 +18,20 @@ const sessionSchema = new mongoose.Schema({
         selectionMode: {
             type: String,
             enum: ["manual", "ai_random"],
-            default: "manual",
+            default: "ai_random",
         },
         focus: {
             type: String,
-            enum: ["situational", "system-design-lite", "algorithms"],
-            default: "situational",
+            enum: [
+                "coding",
+                "system-design",
+                "aptitude",
+                "verbal",
+                "situational",
+                "system-design-lite",
+                "algorithms",
+            ],
+            default: "coding",
         },
         enforceFullscreen: {
             type: Boolean,

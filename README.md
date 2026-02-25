@@ -1,108 +1,123 @@
-<h1 align="center">✨ Full-Stack Interview Platform ✨</h1>
+# Talent-IQ
 
-![Demo App](/frontend/public/readme-screenshot.png)
+> Full-stack interview practice platform for coding, system design, aptitude, and verbal rounds.
 
-✨ Highlights:
+![Talent-IQ Screenshot](./frontend/public/readme-screenshot.png)
 
-- 🧑‍💻 VSCode-Powered Code Editor
-- 🔐 Authentication via Clerk
-- 🎥 1-on-1 Video Interview Rooms
-- 🧭 Dashboard with Live Stats
-- 🔊 Mic & Camera Toggle, Screen Sharing & Recording
-- 💬 Real-time Chat Messaging
-- ⚙️ Secure Code Execution in Isolated Environment
-- 🎯 Auto Feedback — Success / Fail based on test cases
-- 🎉 Confetti on Success + Notifications on Fail
-- 🧩 Practice Problems Page (solo coding mode)
-- 🔒 Room Locking — allows only 2 participants
-- 🧠 Background Jobs with Inngest (async tasks)
-- 🧰 REST API with Node.js & Express
-- ⚡ Data Fetching & Caching via TanStack Query
+## Why Talent-IQ
+Talent-IQ combines solo practice and live mock interviews in one workflow:
 
----
+- Practice categorized problems with difficulty filters
+- Run code with language-aware starter templates
+- Create and join live 1:1 interview sessions
+- Get AI-generated feedback after sessions
+- Track progress from dashboard and profile analytics
 
-## 🧪 .env Setup
+## Key Features
+- Multi-category problem bank: Coding, System Design, Aptitude, Verbal
+- Monaco-based code editor (JavaScript, Python, Java)
+- Auto-check against expected outputs
+- Real-time video + chat session rooms (2 participants max)
+- Session summaries with attempts, success rate, and score
+- Google OAuth + JWT auth flow
+- Profile insights: accuracy, readiness meter, solved breakdown
 
-### Backend (`/backend`)
+## Tech Stack
+- Frontend: React 19, Vite, Tailwind CSS, React Router, TanStack Query
+- Backend: Node.js, Express, MongoDB (Mongoose)
+- Realtime: Stream Video + Stream Chat
+- AI/Async: OpenAI + Inngest
+- Auth: Email/password + Google Sign-In + JWT cookies
+
+## Project Structure
+```text
+talent-IQ/
+  backend/      # Express API, auth, sessions, AI endpoints
+  frontend/     # React app, pages, components, problem engine
+  docker-compose.yml
+```
+
+## Environment Variables
+
+### Backend (`backend/.env`)
+Use `backend/.env.example` as base:
 
 ```bash
 PORT=3000
-NODE_ENV=development
+NODE_ENV=production
+DB_URL=
 
-DB_URL=your_mongodb_connection_url
+INNGEST_EVENT_KEY=
+INNGEST_SIGNING_KEY=
 
-INNGEST_EVENT_KEY=your_inngest_event_key
-INNGEST_SIGNING_KEY=your_inngest_signing_key
+STREAM_API_KEY=
+STREAM_API_SECRET=
 
-STREAM_API_KEY=your_stream_api_key
-STREAM_API_SECRET=your_stream_api_secret
+JWT_SECRET=
+CLIENT_URL=http://localhost:8080
+GOOGLE_CLIENT_ID=
 
-CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
-
-CLIENT_URL=http://localhost:5173
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
 ```
 
-### Frontend (`/frontend`)
-
+### Frontend (`frontend/.env`)
 ```bash
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-
 VITE_API_URL=http://localhost:3000/api
-
-VITE_STREAM_API_KEY=your_stream_api_key
+VITE_STREAM_API_KEY=
+VITE_GOOGLE_CLIENT_ID=
 ```
 
----
+## Local Development
 
-## 🔧 Run the Backend
-
+### 1) Backend
 ```bash
-
 cd backend
 npm install
 npm run dev
 ```
 
----
-
-## 🔧 Run the Frontend
-
+### 2) Frontend
 ```bash
-
 cd frontend
 npm install
 npm run dev
 ```
 
----
+Frontend runs on `http://localhost:5173` by default.
 
-## 🐳 Run with Docker
-
-From project root:
+## Docker Setup
+Run everything from root:
 
 ```bash
 docker compose up -d --build
 ```
 
-App URLs:
-
+Services:
 - Frontend: `http://localhost:8080`
-- Backend health check: `http://localhost:3000/health`
-- MongoDB: `mongodb://localhost:27017` (optional external access)
-
-Notes:
-
-- Backend uses `backend/.env` through `docker-compose.yml`.
-- Copy `backend/.env.example` to `backend/.env` and fill values before first run.
-- Frontend calls backend via Nginx proxy at `/api`.
-- If using Google OAuth, add `http://localhost:8080` to allowed origins/redirects.
-- For production, use strong secrets and do not commit real `.env` values.
-- In Docker, backend is configured to use the local Mongo container (`mongodb://mongo:27017/talentiq`).
+- Backend health: `http://localhost:3000/health`
+- MongoDB: `mongodb://localhost:27017`
 
 Useful commands:
-
 ```bash
 docker compose logs -f
 docker compose down
 ```
+
+## API Snapshot
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/oauth/google`
+- `POST /api/sessions`
+- `GET /api/sessions/active`
+- `GET /api/sessions/my-recent`
+- `POST /api/sessions/:id/join`
+- `POST /api/sessions/:id/end`
+
+## What Makes It Stand Out
+- One platform for both async practice and live interview simulation
+- Covers technical + non-technical interview prep dimensions
+- Built-in feedback loop with analytics and readiness tracking
+
+## License
+ISC

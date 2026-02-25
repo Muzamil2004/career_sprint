@@ -1,189 +1,217 @@
 const FOCUS_PRESETS = {
-  situational: {
+  coding: {
     weight: 5,
     themes: [
       {
-        key: "rate-limiter-window",
-        title: "Rate Limiter for Burst Traffic",
-        category: "Real-world Systems",
+        title: "Sliding Window Duplicate Detector",
+        category: "Coding Interview",
         difficulty: "medium",
-        functionName: "shouldAllowRequest",
-        jsSignature: "(events, limit, windowMs)",
-        pySignature: "(events, limit, window_ms)",
-        javaSignature: "(List<Integer> events, int limit, int windowMs)",
+        functionName: "hasNearbyDuplicate",
+        jsSignature: "(nums, k)",
+        pySignature: "(nums, k)",
+        javaSignature: "(int[] nums, int k)",
         examples: [
-          {
-            input: "events = [0, 100, 200, 800, 900], limit = 3, windowMs = 500",
-            output: "[true, true, true, false, true]",
-            explanation: "The 4th event exceeds 3 requests within the last 500ms window.",
-          },
-          {
-            input: "events = [10, 11, 12, 13], limit = 2, windowMs = 3",
-            output: "[true, true, false, true]",
-          },
+          { input: "nums = [1, 2, 3, 1], k = 3", output: "true" },
+          { input: "nums = [1, 0, 1, 1], k = 1", output: "true" },
         ],
         constraints: [
-          "1 <= events.length <= 2 * 10^5",
-          "events is non-decreasing",
-          "0 <= events[i] <= 10^9",
+          "1 <= nums.length <= 10^5",
+          "-10^9 <= nums[i] <= 10^9",
+          "0 <= k <= 10^5",
         ],
       },
       {
-        key: "warehouse-priority-queue",
-        title: "Warehouse Pick Priority Scheduler",
-        category: "Operations Scenario",
-        difficulty: "medium",
-        functionName: "nextPickOrder",
-        jsSignature: "(orders, capacity)",
-        pySignature: "(orders, capacity)",
-        javaSignature: "(List<int[]> orders, int capacity)",
-        examples: [
-          {
-            input: "orders = [[4, 30], [2, 90], [6, 40]], capacity = 7",
-            output: "[1, 0]",
-            explanation: "Pick by highest priority score while respecting remaining capacity.",
-          },
-        ],
-        constraints: [
-          "orders[i] = [size, priority]",
-          "1 <= orders.length <= 10^5",
-          "1 <= size, priority <= 10^4",
-        ],
-      },
-      {
-        key: "incident-dedup",
-        title: "Incident Alert Deduplication",
-        category: "Reliability Engineering",
+        title: "Minimum Meeting Rooms",
+        category: "Coding Interview",
         difficulty: "hard",
-        functionName: "deduplicateAlerts",
-        jsSignature: "(alerts, dedupSeconds)",
-        pySignature: "(alerts, dedup_seconds)",
-        javaSignature: "(List<String[]> alerts, int dedupSeconds)",
+        functionName: "minMeetingRooms",
+        jsSignature: "(intervals)",
+        pySignature: "(intervals)",
+        javaSignature: "(List<int[]> intervals)",
         examples: [
-          {
-            input: "alerts = [[\"db_down\",\"100\"],[\"db_down\",\"110\"],[\"cache_hot\",\"112\"],[\"db_down\",\"170\"]], dedupSeconds = 60",
-            output: "[[\"db_down\",100],[\"cache_hot\",112],[\"db_down\",170]]",
-          },
+          { input: "intervals = [[0,30],[5,10],[15,20]]", output: "2" },
+          { input: "intervals = [[7,10],[2,4]]", output: "1" },
         ],
         constraints: [
-          "alerts[i] = [eventKey, timestamp]",
-          "timestamps are non-decreasing",
-          "1 <= alerts.length <= 2 * 10^5",
+          "1 <= intervals.length <= 10^5",
+          "intervals[i] = [start, end]",
+          "0 <= start < end <= 10^6",
         ],
       },
     ],
   },
-  "system-design-lite": {
+  "system-design": {
     weight: 3,
     themes: [
       {
-        key: "tiny-lru",
-        title: "Tiny LRU Cache Core",
-        category: "System Design Lite",
-        difficulty: "hard",
-        functionName: "runCacheOps",
-        jsSignature: "(capacity, ops)",
-        pySignature: "(capacity, ops)",
-        javaSignature: "(int capacity, List<String[]> ops)",
+        title: "Design a URL Shortener Core",
+        category: "System Design Interview",
+        difficulty: "medium",
+        functionName: "designUrlShortener",
+        jsSignature: "(requirements)",
+        pySignature: "(requirements)",
+        javaSignature: "(Map<String, Object> requirements)",
         examples: [
           {
-            input: "capacity = 2, ops = [[\"put\",\"1\",\"10\"],[\"put\",\"2\",\"20\"],[\"get\",\"1\"],[\"put\",\"3\",\"30\"],[\"get\",\"2\"]]",
-            output: "[null, null, 10, null, -1]",
+            input: "requirements = { dailyUrls: 1000000, customAlias: true, analytics: true }",
+            output: "A short, scalable architecture with APIs, data model, cache, and tradeoffs",
           },
         ],
         constraints: [
-          "1 <= ops.length <= 2 * 10^5",
-          "1 <= capacity <= 3000",
-          "All operations should be O(1) average",
+          "Address read-heavy traffic and unique key generation.",
+          "Describe scaling, reliability, and observability choices.",
         ],
       },
       {
-        key: "leaderboard-window",
-        title: "Rolling Leaderboard Window",
-        category: "Analytics Backend",
-        difficulty: "medium",
-        functionName: "topKPlayers",
-        jsSignature: "(events, windowSeconds, k)",
-        pySignature: "(events, window_seconds, k)",
-        javaSignature: "(List<int[]> events, int windowSeconds, int k)",
+        title: "Design a Notification Service",
+        category: "System Design Interview",
+        difficulty: "hard",
+        functionName: "designNotificationService",
+        jsSignature: "(requirements)",
+        pySignature: "(requirements)",
+        javaSignature: "(Map<String, Object> requirements)",
         examples: [
           {
-            input: "events = [[1, 10, 5], [2, 10, 3], [3, 11, 9], [12, 10, 4]], windowSeconds = 10, k = 2",
-            output: "[[10,8],[11,9]]",
+            input: "requirements = { channels: [email,sms,push], retries: true, peakQps: 50000 }",
+            output: "A resilient queue-driven architecture with retries, dedup, and monitoring",
           },
         ],
         constraints: [
-          "events[i] = [timestamp, playerId, scoreDelta]",
-          "events are sorted by timestamp",
-          "1 <= events.length <= 10^5",
+          "Support fan-out, retries, and idempotency.",
+          "Explain failure handling and rate limiting.",
         ],
       },
     ],
   },
-  algorithms: {
+  aptitude: {
     weight: 2,
     themes: [
       {
-        key: "delivery-slots",
-        title: "Delivery Slot Feasibility",
-        category: "Greedy + Intervals",
+        title: "Time and Work Mixer",
+        category: "Aptitude Interview",
         difficulty: "medium",
-        functionName: "maxDeliveries",
-        jsSignature: "(slots)",
-        pySignature: "(slots)",
-        javaSignature: "(List<int[]> slots)",
+        functionName: "solveAptitudeSet",
+        jsSignature: "(questions)",
+        pySignature: "(questions)",
+        javaSignature: "(List<String> questions)",
         examples: [
           {
-            input: "slots = [[1,2],[2,3],[3,4],[1,3]]",
-            output: "3",
+            input: "A completes work in 6 days, B in 8 days. Together?",
+            output: "24/7 days",
+          },
+          {
+            input: "If 20% of x is 48, find x",
+            output: "240",
           },
         ],
         constraints: [
-          "slots[i] = [start, end]",
-          "1 <= slots.length <= 2 * 10^5",
-          "start < end",
+          "Show clean step-by-step calculations.",
+          "Prefer exact values over rounded decimals unless asked.",
         ],
       },
       {
-        key: "feature-flag-dependencies",
-        title: "Feature Flag Dependency Resolver",
-        category: "Graph + Topological Sort",
+        title: "Profit, Loss, and Percentages",
+        category: "Aptitude Interview",
         difficulty: "hard",
-        functionName: "buildOrder",
-        jsSignature: "(flags, dependencies)",
-        pySignature: "(flags, dependencies)",
-        javaSignature: "(List<String> flags, List<String[]> dependencies)",
+        functionName: "solveAptitudeSet",
+        jsSignature: "(questions)",
+        pySignature: "(questions)",
+        javaSignature: "(List<String> questions)",
         examples: [
           {
-            input: "flags = [\"A\",\"B\",\"C\"], dependencies = [[\"A\",\"B\"],[\"B\",\"C\"]]",
-            output: "[\"C\",\"B\",\"A\"]",
+            input: "Marked price is 2500, discount 20%, then 5% GST. Final price?",
+            output: "2100",
           },
         ],
         constraints: [
-          "No duplicate flags",
-          "Return [] when cycle exists",
-          "1 <= flags.length <= 10^4",
+          "Use percentage transformations carefully.",
+          "Keep units and intermediate values clear.",
+        ],
+      },
+    ],
+  },
+  verbal: {
+    weight: 2,
+    themes: [
+      {
+        title: "Grammar and Sentence Correction",
+        category: "Verbal Interview",
+        difficulty: "medium",
+        functionName: "solveVerbalSet",
+        jsSignature: "(questions)",
+        pySignature: "(questions)",
+        javaSignature: "(List<String> questions)",
+        examples: [
+          {
+            input: "Correct: 'Each of the players have a kit.'",
+            output: "'Each of the players has a kit.'",
+          },
+        ],
+        constraints: [
+          "Answer with corrected sentence and one-line rule.",
+          "Keep wording concise and grammatically precise.",
+        ],
+      },
+      {
+        title: "Reading Comprehension and Vocabulary",
+        category: "Verbal Interview",
+        difficulty: "hard",
+        functionName: "solveVerbalSet",
+        jsSignature: "(questions)",
+        pySignature: "(questions)",
+        javaSignature: "(List<String> questions)",
+        examples: [
+          {
+            input: "Find synonym of 'concise' and use it in a sentence.",
+            output: "Synonym: brief. Sentence: She gave a brief and clear update.",
+          },
+        ],
+        constraints: [
+          "Prefer direct, context-aware vocabulary choices.",
+          "Avoid overlong explanations unless prompted.",
         ],
       },
     ],
   },
 };
 
-const SITUATION_PROMPTS = [
-  "An interviewer says your service must survive flash-sale spikes without dropping requests.",
-  "You are handed a production incident timeline and asked to code the core recovery logic.",
-  "A hiring manager asks for a clean, testable solution that can be explained under pressure.",
-  "Your teammate just introduced latency regressions and you need a robust fix quickly.",
-];
+const FOCUS_ALIASES = {
+  situational: "coding",
+  algorithms: "coding",
+  "system-design-lite": "system-design",
+};
+
+const SITUATION_PROMPTS = {
+  coding: [
+    "The interviewer wants an optimized coding solution with a clean explanation.",
+    "You are asked to solve this as if in a live whiteboard round.",
+  ],
+  "system-design": [
+    "The interviewer asks for a production-ready architecture with trade-offs.",
+    "You need to design a scalable system and justify each component.",
+  ],
+  aptitude: [
+    "The interviewer evaluates speed, accuracy, and clarity of calculations.",
+    "You are expected to show a clear step-by-step numerical approach.",
+  ],
+  verbal: [
+    "The interviewer is assessing grammar, precision, and communication clarity.",
+    "You need concise, correct responses with brief justification.",
+  ],
+};
 
 function pickRandom(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+function normalizeFocus(requestedFocus) {
+  if (FOCUS_PRESETS[requestedFocus]) return requestedFocus;
+  return FOCUS_ALIASES[requestedFocus] || "coding";
+}
+
 function weightedFocusPick(requestedFocus) {
-  if (requestedFocus && FOCUS_PRESETS[requestedFocus]) {
-    return requestedFocus;
-  }
+  const normalized = normalizeFocus(requestedFocus);
+  if (requestedFocus && FOCUS_PRESETS[normalized]) return normalized;
 
   const entries = Object.entries(FOCUS_PRESETS);
   const totalWeight = entries.reduce((sum, [, value]) => sum + value.weight, 0);
@@ -193,15 +221,19 @@ function weightedFocusPick(requestedFocus) {
     roll -= value.weight;
     if (roll <= 0) return focus;
   }
-
-  return "situational";
+  return "coding";
 }
 
-function buildStarterCode(template) {
+function buildStarterCode(template, focus) {
+  const commonHint =
+    focus === "coding"
+      ? "Implement the interview-ready solution."
+      : "Write your structured answer in code comments or plain text.";
+
   return {
-    javascript: `function ${template.functionName}${template.jsSignature} {\n  // Implement the interview-ready solution here\n}\n\n// Optional: add local test cases below`,
-    python: `def ${template.functionName}${template.pySignature}:\n    # Implement the interview-ready solution here\n    pass\n\n# Optional: add local test cases below`,
-    java: `import java.util.*;\n\nclass Solution {\n    public static Object ${template.functionName}${template.javaSignature} {\n        // Implement the interview-ready solution here\n        return null;\n    }\n}`,
+    javascript: `function ${template.functionName}${template.jsSignature} {\n  // ${commonHint}\n}\n\n// Optional: add your notes/tests below`,
+    python: `def ${template.functionName}${template.pySignature}:\n    # ${commonHint}\n    pass\n\n# Optional: add your notes/tests below`,
+    java: `import java.util.*;\n\nclass Solution {\n    public static Object ${template.functionName}${template.javaSignature} {\n        // ${commonHint}\n        return null;\n    }\n}`,
   };
 }
 
@@ -215,13 +247,22 @@ function sanitizeDifficulty(minDifficulty, difficulty) {
   return minDifficulty;
 }
 
+function byMinDifficulty(themes, minDifficulty) {
+  const order = ["easy", "medium", "hard"];
+  const minIndex = order.indexOf(minDifficulty);
+  if (minIndex === -1) return themes;
+
+  const filtered = themes.filter((theme) => order.indexOf(theme.difficulty) >= minIndex);
+  return filtered.length > 0 ? filtered : themes;
+}
+
 export function generateInterviewProblem({ focus, minDifficulty = "medium" } = {}) {
   const selectedFocus = weightedFocusPick(focus);
   const focusBundle = FOCUS_PRESETS[selectedFocus];
-  const selectedTheme = pickRandom(focusBundle.themes);
-
+  const eligibleThemes = byMinDifficulty(focusBundle.themes, minDifficulty);
+  const selectedTheme = pickRandom(eligibleThemes);
   const difficulty = sanitizeDifficulty(minDifficulty, selectedTheme.difficulty);
-  const scenarioLine = pickRandom(SITUATION_PROMPTS);
+  const scenarioLine = pickRandom(SITUATION_PROMPTS[selectedFocus]);
 
   return {
     id: `ai-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -231,15 +272,15 @@ export function generateInterviewProblem({ focus, minDifficulty = "medium" } = {
     promptType: "interview-scenario",
     aiGenerated: true,
     description: {
-      text: `${scenarioLine} Build a solution for: ${selectedTheme.title}.`,
+      text: `${scenarioLine} Prompt: ${selectedTheme.title}.`,
       notes: [
-        "Explain tradeoffs out loud as if you're in a live interview.",
-        "Prefer readability first, then optimize if needed.",
+        "Think aloud as if this is a real interview round.",
+        "Be explicit about trade-offs, assumptions, and edge cases.",
       ],
     },
     examples: selectedTheme.examples,
     constraints: selectedTheme.constraints,
-    starterCode: buildStarterCode(selectedTheme),
+    starterCode: buildStarterCode(selectedTheme, selectedFocus),
     expectedOutput: {},
     focus: selectedFocus,
     generatedAt: new Date().toISOString(),

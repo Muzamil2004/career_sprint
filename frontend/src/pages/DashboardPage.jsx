@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useActiveSessions, useCreateSession, useMyRecentSessions } from "../hooks/useSessions";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
+import { PROBLEMS } from "../data/problems";
 import {
   BookOpenIcon,
   BrainCircuitIcon,
-  CheckCircle2Icon,
   FlameIcon,
   PlusIcon,
   SparklesIcon,
@@ -23,12 +23,10 @@ function DashboardPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [roomConfig, setRoomConfig] = useState({
     selectionMode: "ai_random",
-    focus: "situational",
+    focus: "coding",
     minDifficulty: "medium",
     enforceFullscreen: true,
     blockClipboard: true,
-    problem: "",
-    difficulty: "",
   });
 
   const createSessionMutation = useCreateSession();
@@ -37,17 +35,8 @@ function DashboardPage() {
   const { data: recentSessionsData, isLoading: loadingRecentSessions } = useMyRecentSessions();
 
   const handleCreateRoom = () => {
-    if (
-      roomConfig.selectionMode === "manual" &&
-      (!roomConfig.problem || !roomConfig.difficulty)
-    ) {
-      return;
-    }
-
     createSessionMutation.mutate(
       {
-        problem: roomConfig.problem,
-        difficulty: roomConfig.difficulty,
         selectionMode: roomConfig.selectionMode,
         focus: roomConfig.focus,
         minDifficulty: roomConfig.minDifficulty,
@@ -72,6 +61,20 @@ function DashboardPage() {
     95,
     45 + Math.min(recentSessions.length, 4) * 10 + (user?.email ? 10 : 0)
   );
+  const totalPracticeProblems = Object.keys(PROBLEMS).length;
+  const solvedPracticeProblems = (() => {
+    if (typeof window === "undefined") return 0;
+    try {
+      const storedSolvedProblemIds = localStorage.getItem("solved-problem-ids");
+      const parsedIds = storedSolvedProblemIds ? JSON.parse(storedSolvedProblemIds) : [];
+      return Array.isArray(parsedIds) ? parsedIds.length : 0;
+    } catch {
+      return 0;
+    }
+  })();
+  const practiceProgress = totalPracticeProblems
+    ? Math.min(100, Math.round((solvedPracticeProblems / totalPracticeProblems) * 100))
+    : 0;
 
   const isUserInSession = (session) => {
     if (!currentUserId) return false;
@@ -184,24 +187,21 @@ function DashboardPage() {
             </div>
 
             <div className="glass-panel p-6 lg:col-span-5">
-              <h2 className="display-font text-2xl font-bold text-[var(--text-primary)]">Goals & Progress</h2>
-              <div className="mt-5 space-y-4">
-                {[
-                  { label: "Complete profile", done: profileCompletion >= 70 },
-                  { label: "Review question bank", done: recentSessions.length >= 1 },
-                  { label: "Practice mock interview", done: recentSessions.length >= 2 },
-                  { label: "Get AI feedback", done: recentSessions.length >= 3 },
-                ].map((goal) => (
-                  <div key={goal.label} className="flex items-start gap-3">
-                    <CheckCircle2Icon
-                      className={`mt-0.5 size-5 ${goal.done ? "text-emerald-500" : "text-[var(--text-subtle)]"}`}
-                    />
-                    <div>
-                      <p className="font-semibold text-[var(--text-primary)]">{goal.label}</p>
-                      <p className="text-xs text-[var(--text-muted)]">{goal.done ? "Completed" : "In progress"}</p>
-                    </div>
-                  </div>
-                ))}
+              <h2 className="display-font text-2xl font-bold text-[var(--text-primary)]">Progress</h2>
+              <div className="mt-5 rounded-2xl border border-[var(--line)] bg-[var(--surface)]/75 p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">Practice problems</p>
+                  <p className="text-xs font-semibold text-[var(--text-muted)]">
+                    {solvedPracticeProblems}/{totalPracticeProblems}
+                  </p>
+                </div>
+                <div className="h-3 w-full overflow-hidden rounded-full bg-[var(--surface-soft-3)]">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-primary-2)] transition-all"
+                    style={{ width: `${practiceProgress}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-[var(--text-muted)]">{practiceProgress}% complete</p>
               </div>
             </div>
           </section>
@@ -243,6 +243,36 @@ function DashboardPage() {
                   <span className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
                     <BookOpenIcon className="size-4 text-[var(--brand-primary)]" />
                     Coding Questions
+                  </span>
+                  <ArrowRightIcon className="size-4 text-[var(--text-subtle)]" />
+                </button>
+                <button
+                  onClick={() => navigate("/resources/system-design")}
+                  className="flex items-center justify-between rounded-xl border border-[var(--line)] bg-[var(--surface)]/80 p-3 text-left transition hover:border-[var(--line-strong)]"
+                >
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
+                    <BookOpenIcon className="size-4 text-[var(--brand-primary)]" />
+                    System Design Questions
+                  </span>
+                  <ArrowRightIcon className="size-4 text-[var(--text-subtle)]" />
+                </button>
+                <button
+                  onClick={() => navigate("/resources/aptitude")}
+                  className="flex items-center justify-between rounded-xl border border-[var(--line)] bg-[var(--surface)]/80 p-3 text-left transition hover:border-[var(--line-strong)]"
+                >
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
+                    <BookOpenIcon className="size-4 text-[var(--brand-primary)]" />
+                    Aptitude Questions
+                  </span>
+                  <ArrowRightIcon className="size-4 text-[var(--text-subtle)]" />
+                </button>
+                <button
+                  onClick={() => navigate("/resources/verbal")}
+                  className="flex items-center justify-between rounded-xl border border-[var(--line)] bg-[var(--surface)]/80 p-3 text-left transition hover:border-[var(--line-strong)]"
+                >
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
+                    <BookOpenIcon className="size-4 text-[var(--brand-primary)]" />
+                    Verbal Questions
                   </span>
                   <ArrowRightIcon className="size-4 text-[var(--text-subtle)]" />
                 </button>
