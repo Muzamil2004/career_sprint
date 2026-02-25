@@ -1,15 +1,14 @@
 import { Link } from "react-router";
 import {
   ArrowRightIcon,
+  BookOpenIcon,
   BriefcaseIcon,
   CheckIcon,
-  Code2Icon,
   MessageSquareQuoteIcon,
   Moon,
   SparklesIcon,
   Sun,
   TargetIcon,
-  UsersIcon,
   VideoIcon,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
@@ -69,7 +68,7 @@ function HomePage() {
         <div className="space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--brand-primary)] shadow-sm">
             <TargetIcon className="size-4" />
-            Smart interview preparation platform
+            End-to-end interview preparation platform
           </div>
 
           <h1 className="display-font text-5xl font-bold leading-tight lg:text-7xl">
@@ -81,35 +80,38 @@ function HomePage() {
           </h1>
 
           <p className="max-w-xl text-lg leading-relaxed text-[var(--text-soft)]">
-            Collaborate in live coding rooms, simulate real interviews, and improve with structured
-            practice sessions and guided feedback loops.
+            Practice coding, system design, aptitude, and verbal rounds in one place, run live mock
+            sessions, and improve with AI feedback plus readiness analytics.
           </p>
 
           <div className="flex flex-wrap gap-3">
             <div className="rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-body)]">
               <CheckIcon className="mr-1 inline size-4 text-[var(--brand-highlight)]" />
-              Live Pair Coding
+              Multi-track problem sets
             </div>
             <div className="rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-body)]">
               <CheckIcon className="mr-1 inline size-4 text-[var(--brand-highlight)]" />
-              Video + Editor
+              Live mock interview rooms
             </div>
             <div className="rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--text-body)]">
               <CheckIcon className="mr-1 inline size-4 text-[var(--brand-highlight)]" />
-              Multi-language execution
+              Profile readiness meter
             </div>
           </div>
 
           <div className="flex flex-wrap gap-4">
             <Link to="/login">
               <button className="flex items-center gap-2 rounded-xl bg-[var(--brand-primary)] px-7 py-3.5 text-base font-semibold text-white shadow-lg transition hover:bg-[var(--brand-primary-3)]">
-                Start Session
+                Start Practice
                 <ArrowRightIcon className="size-5" />
               </button>
             </Link>
-            <button className="rounded-xl border border-[var(--line-strong)] bg-[var(--surface)] px-7 py-3.5 text-base font-semibold text-[var(--brand-primary)] transition hover:bg-[var(--surface-soft-2)]">
+            <a
+              href="#features"
+              className="rounded-xl border border-[var(--line-strong)] bg-[var(--surface)] px-7 py-3.5 text-base font-semibold text-[var(--brand-primary)] transition hover:bg-[var(--surface-soft-2)]"
+            >
               Explore Features
-            </button>
+            </a>
           </div>
         </div>
 
@@ -134,45 +136,44 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16">
+      <section id="features" className="mx-auto max-w-7xl px-4 pb-16">
         <div className="mb-10 text-center">
           <h2 className="display-font text-4xl font-bold text-[var(--text-primary)]">
-            Everything for Interview Readiness
+            Everything You Need for Interview Readiness
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-[var(--text-muted)]">
-            Focus on practicing, communicating, and solving under pressure with one consistent
-            workflow.
+            One workflow for focused practice, live simulation, and measurable progress.
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
             <div className="mb-4 inline-flex rounded-xl bg-[var(--surface-soft-4)] p-3 text-[var(--brand-primary)]">
+              <BookOpenIcon className="size-7" />
+            </div>
+            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Problem Tracks</h3>
+            <p className="mt-2 text-[var(--text-muted)]">
+              Solve curated coding, system design, aptitude, and verbal questions with difficulty filters.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div className="mb-4 inline-flex rounded-xl bg-[var(--surface-soft-4)] p-3 text-[var(--brand-primary)]">
               <VideoIcon className="size-7" />
             </div>
-            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Interview Rooms</h3>
+            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Live Mock Sessions</h3>
             <p className="mt-2 text-[var(--text-muted)]">
-              Create or join live sessions with structured prompts and real-time collaboration.
+              Run realistic 1:1 interview rooms with video, chat, and collaborative problem-solving.
             </p>
           </div>
 
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
             <div className="mb-4 inline-flex rounded-xl bg-[var(--surface-soft-4)] p-3 text-[var(--brand-primary)]">
-              <Code2Icon className="size-7" />
+              <TargetIcon className="size-7" />
             </div>
-            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Shared Coding</h3>
+            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Progress Analytics</h3>
             <p className="mt-2 text-[var(--text-muted)]">
-              Work in a synchronized editor and test solutions instantly with language support.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-            <div className="mb-4 inline-flex rounded-xl bg-[var(--surface-soft-4)] p-3 text-[var(--brand-primary)]">
-              <UsersIcon className="size-7" />
-            </div>
-            <h3 className="display-font text-xl font-semibold text-[var(--text-primary)]">Peer Feedback</h3>
-            <p className="mt-2 text-[var(--text-muted)]">
-              Improve communication and problem-solving through collaborative review.
+              Track accuracy, category-wise solved counts, and interview readiness from your profile.
             </p>
           </div>
         </div>
@@ -183,30 +184,30 @@ function HomePage() {
           <div className="rounded-2xl bg-[var(--surface-soft-2)] p-6">
             <BriefcaseIcon className="size-8 text-[var(--brand-primary)]" />
             <h3 className="display-font mt-3 text-2xl font-semibold text-[var(--text-primary)]">
-              Company-style rounds
+              AI feedback loops
             </h3>
             <p className="mt-2 text-[var(--text-muted)]">
-              Practice with realistic session formats and time pressure.
+              Get post-session guidance tailored to coding, system design, aptitude, or verbal rounds.
             </p>
           </div>
 
           <div className="rounded-2xl bg-[var(--surface-soft-2)] p-6">
             <MessageSquareQuoteIcon className="size-8 text-[var(--brand-primary)]" />
             <h3 className="display-font mt-3 text-2xl font-semibold text-[var(--text-primary)]">
-              Communication focus
+              Secure authentication
             </h3>
             <p className="mt-2 text-[var(--text-muted)]">
-              Sharpen explanation quality while solving technical tasks.
+              Continue with email/password or Google sign-in and jump straight into interview practice.
             </p>
           </div>
 
           <div className="rounded-2xl bg-[var(--surface-soft-2)] p-6">
             <SparklesIcon className="size-8 text-[var(--brand-primary)]" />
             <h3 className="display-font mt-3 text-2xl font-semibold text-[var(--text-primary)]">
-              Progress-ready workflow
+              Readiness-first workflow
             </h3>
             <p className="mt-2 text-[var(--text-muted)]">
-              Track practice rhythm with active and recent session history.
+              Build momentum with dashboard tracking, solve streaks, and readiness progression.
             </p>
           </div>
         </div>
