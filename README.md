@@ -1,44 +1,51 @@
 # Talent-IQ
 
-> Full-stack interview practice platform for coding, system design, aptitude, and verbal rounds.
+Full-stack interview preparation platform for coding, system design, aptitude, and verbal practice.
 
 ![Talent-IQ Screenshot](./frontend/public/readme-screenshot.png)
 
-## Why Talent-IQ
-Talent-IQ combines solo practice and live mock interviews in one workflow:
+## Overview
+Talent-IQ combines async practice and live mock interviews in one workflow so candidates can prepare end-to-end in a single product.
 
-- Practice categorized problems with difficulty filters
-- Run code with language-aware starter templates
-- Create and join live 1:1 interview sessions
-- Get AI-generated feedback after sessions
-- Track progress from dashboard and profile analytics
+## Quick Links
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [Local Development](#local-development)
+- [Docker Setup](#docker-setup)
+- [API Snapshot](#api-snapshot)
 
-## Key Features
+## Features
 - Multi-category problem bank: Coding, System Design, Aptitude, Verbal
-- Monaco-based code editor (JavaScript, Python, Java)
+- Monaco-based editor with language-aware starter templates (JavaScript, Python, Java)
 - Auto-check against expected outputs
-- Real-time video + chat session rooms (2 participants max)
+- Live 1:1 interview rooms with real-time video and chat
+- AI-generated post-session feedback
 - Session summaries with attempts, success rate, and score
-- Google OAuth + JWT auth flow
-- Profile insights: accuracy, readiness meter, solved breakdown
+- Google OAuth + JWT authentication flow
+- Dashboard and profile analytics (accuracy, readiness meter, solved breakdown)
 
 ## Tech Stack
-- Frontend: React 19, Vite, Tailwind CSS, React Router, TanStack Query
-- Backend: Node.js, Express, MongoDB (Mongoose)
-- Realtime: Stream Video + Stream Chat
-- AI/Async: OpenAI + Inngest
-- Auth: Email/password + Google Sign-In + JWT cookies
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React 19, Vite 7, Tailwind CSS 4, React Router 7, TanStack Query 5, Axios, Monaco Editor |
+| Backend | Node.js (ES Modules), Express 5 |
+| Database | MongoDB 7, Mongoose 8 |
+| Realtime | Stream Video React SDK, Stream Chat, stream-chat-react |
+| AI + Async Jobs | OpenAI API, Inngest |
+| Auth + Security | bcryptjs, Google OAuth (`@react-oauth/google`, `google-auth-library`), JWT, cookie-based sessions |
+| Dev Tooling | ESLint 9, Nodemon, Docker, Docker Compose |
 
 ## Project Structure
 ```text
 talent-IQ/
-  backend/      # Express API, auth, sessions, AI endpoints
-  frontend/     # React app, pages, components, problem engine
+  backend/              # Express API, auth, sessions, AI endpoints
+  frontend/             # React app, pages, components, problem engine
   docker-compose.yml
 ```
 
 ## Environment Variables
-
 ### Backend (`backend/.env`)
 Use `backend/.env.example` as base:
 
@@ -69,15 +76,14 @@ VITE_GOOGLE_CLIENT_ID=
 ```
 
 ## Local Development
-
-### 1) Backend
+### 1. Start Backend
 ```bash
 cd backend
 npm install
 npm run dev
 ```
 
-### 2) Frontend
+### 2. Start Frontend
 ```bash
 cd frontend
 npm install
@@ -87,7 +93,7 @@ npm run dev
 Frontend runs on `http://localhost:5173` by default.
 
 ## Docker Setup
-Run everything from root:
+Run from project root:
 
 ```bash
 docker compose up -d --build
@@ -95,7 +101,7 @@ docker compose up -d --build
 
 Services:
 - Frontend: `http://localhost:8080`
-- Backend health: `http://localhost:3000/health`
+- Backend health: `http://localhost:3001/health`
 - MongoDB: `mongodb://localhost:27017`
 
 Useful commands:
@@ -114,10 +120,10 @@ docker compose down
 - `POST /api/sessions/:id/join`
 - `POST /api/sessions/:id/end`
 
-## What Makes It Stand Out
-- One platform for both async practice and live interview simulation
-- Covers technical + non-technical interview prep dimensions
-- Built-in feedback loop with analytics and readiness tracking
+## Why It Stands Out
+- Unifies async practice and live interview simulation
+- Covers both technical and non-technical interview rounds
+- Creates a built-in feedback loop with analytics and readiness tracking
 
 ## License
 ISC

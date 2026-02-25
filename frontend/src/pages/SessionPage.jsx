@@ -67,9 +67,6 @@ function SessionPage() {
 
   const {
     videoRef,
-    isCameraReady,
-    permissionError,
-    isMonitoring,
     awaySeconds,
     totalAwaySeconds,
     maxAwaySeconds,
@@ -404,12 +401,21 @@ function SessionPage() {
       )}
       {shouldEnableEyeProctoring &&
         !isEyeLockActive &&
-        eyeStatus === "looking-away" &&
-        awaySeconds >= 0.8 && (
-          <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg border border-amber-300 bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-900 shadow-sm">
+        (eyeStatus === "looking-away" || eyeStatus === "no-face") &&
+        awaySeconds >= 0.35 && (
+          <div className="absolute left-1/2 top-4 z-[60] -translate-x-1/2 rounded-lg border border-amber-300 bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-900 shadow-sm">
             {warningMessage || "Please keep your eyes on screen to continue the interview."}
           </div>
         )}
+      {shouldEnableEyeProctoring && (
+        <video
+          ref={videoRef}
+          className="pointer-events-none fixed -left-[9999px] -top-[9999px] h-px w-px opacity-0"
+          muted
+          playsInline
+          autoPlay
+        />
+      )}
 
       <div className="flex-1">
         <PanelGroup direction="horizontal">
@@ -642,24 +648,6 @@ function SessionPage() {
                 </div>
               ) : (
                 <div className="relative h-full">
-                  {shouldEnableEyeProctoring && (
-                    <div className="absolute right-6 top-6 z-20 rounded-lg border border-[var(--line)] bg-[var(--surface)] p-2 shadow">
-                      <video
-                        ref={videoRef}
-                        className="h-20 w-28 rounded object-cover"
-                        muted
-                        playsInline
-                        autoPlay
-                      />
-                      <p className="mt-1 text-[10px] text-[var(--text-muted)]">
-                        {permissionError
-                          ? "Camera blocked"
-                          : isCameraReady && isMonitoring
-                          ? "Eye tracking active"
-                          : "Starting camera..."}
-                      </p>
-                    </div>
-                  )}
                   <StreamVideo client={streamClient}>
                     <StreamCall call={call}>
                       <VideoCallUI

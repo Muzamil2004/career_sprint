@@ -35,7 +35,7 @@ function CreateSessionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-3xl rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 text-[var(--text-primary)] shadow-2xl">
+      <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 text-[var(--text-primary)] shadow-2xl sm:p-6">
         <h3 className="display-font mb-6 text-2xl font-bold">Create Interview Session</h3>
 
         <div className="space-y-8">

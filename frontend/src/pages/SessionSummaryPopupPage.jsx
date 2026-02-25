@@ -130,9 +130,9 @@ function SessionSummaryPopupPage() {
             <SparklesIcon className="size-4 text-[var(--brand-primary)]" />
             ChatGPT Tips
           </div>
-          <pre className="whitespace-pre-wrap text-sm leading-6 text-[var(--text-body)]">
+          <div className="whitespace-pre-line text-sm leading-7 text-[var(--text-body)]">
             {data.tips || "No tips available."}
-          </pre>
+          </div>
         </div>
 
         <div className="mt-4 rounded-lg border border-[var(--line)] bg-[var(--surface-soft)] p-4">
@@ -140,9 +140,9 @@ function SessionSummaryPopupPage() {
             <TargetIcon className="size-4 text-[var(--brand-secondary)]" />
             Detailed Problem Analysis
           </div>
-          <pre className="whitespace-pre-wrap text-sm leading-6 text-[var(--text-body)]">
+          <div className="whitespace-pre-line text-sm leading-7 text-[var(--text-body)]">
             {data.analysis || "No analysis available."}
-          </pre>
+          </div>
         </div>
 
         <div className="mt-6 flex justify-end">

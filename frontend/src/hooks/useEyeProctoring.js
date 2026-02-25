@@ -1,12 +1,57 @@
 import { useEffect, useRef, useState } from "react";
 
-const WASM_URL =
-  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm";
-const MODEL_URL =
-  "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+const MEDIAPIPE_VERSION = "0.10.32";
+const WASM_URLS = [
+  `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm`,
+  `https://unpkg.com/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm`,
+];
+const MODEL_URLS = [
+  "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+  `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm/face_landmarker.task`,
+  `https://unpkg.com/@mediapipe/tasks-vision@${MEDIAPIPE_VERSION}/wasm/face_landmarker.task`,
+];
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
+}
+
+async function waitForVideoElement(videoRef, isCancelled, timeoutMs = 5000) {
+  const startedAt = performance.now();
+
+  while (!isCancelled()) {
+    if (videoRef.current) return videoRef.current;
+    if (performance.now() - startedAt > timeoutMs) return null;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+
+  return null;
+}
+
+async function createFaceLandmarkerWithFallback(vision) {
+  let lastError = null;
+
+  for (const wasmUrl of WASM_URLS) {
+    for (const modelUrl of MODEL_URLS) {
+      try {
+        const filesetResolver = await vision.FilesetResolver.forVisionTasks(wasmUrl);
+        const faceLandmarker = await vision.FaceLandmarker.createFromOptions(
+          filesetResolver,
+          {
+            baseOptions: { modelAssetPath: modelUrl },
+            runningMode: "VIDEO",
+            numFaces: 1,
+            outputFaceBlendshapes: false,
+            outputFacialTransformationMatrixes: false,
+          }
+        );
+        return faceLandmarker;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+  }
+
+  throw lastError || new Error("Unable to initialize FaceLandmarker");
 }
 
 function getEyeDistractionScore(landmarks) {
@@ -79,6 +124,7 @@ export default function useEyeProctoring({ enabled }) {
   const maxAwayMsRef = useRef(0);
   const lockedAtRef = useRef(null);
   const isLockedRef = useRef(false);
+  const smoothedScoreRef = useRef(0);
   const stopAllRef = useRef(() => {});
 
   const [isCameraReady, setIsCameraReady] = useState(false);
@@ -119,6 +165,7 @@ export default function useEyeProctoring({ enabled }) {
       totalAwayMsRef.current = 0;
       maxAwayMsRef.current = 0;
       lockedAtRef.current = null;
+      smoothedScoreRef.current = 0;
       setIsMonitoring(false);
       setIsCameraReady(false);
       setIsLocked(false);
@@ -171,27 +218,22 @@ export default function useEyeProctoring({ enabled }) {
         }
 
         streamRef.current = stream;
-        const video = videoRef.current;
-        if (!video) return;
+        const video = await waitForVideoElement(videoRef, () => isCancelled);
+        if (!video) {
+          stream.getTracks().forEach((track) => track.stop());
+          setPermissionError("Could not initialize proctoring preview. Please refresh and try again.");
+          setStatus("error");
+          return;
+        }
 
+        video.muted = true;
+        video.playsInline = true;
         video.srcObject = stream;
         await video.play();
         setIsCameraReady(true);
 
         const vision = await import("@mediapipe/tasks-vision");
-        const filesetResolver = await vision.FilesetResolver.forVisionTasks(WASM_URL);
-        const faceLandmarker = await vision.FaceLandmarker.createFromOptions(
-          filesetResolver,
-          {
-            baseOptions: {
-              modelAssetPath: MODEL_URL,
-            },
-            runningMode: "VIDEO",
-            numFaces: 1,
-            outputFaceBlendshapes: false,
-            outputFacialTransformationMatrixes: false,
-          }
-        );
+        const faceLandmarker = await createFaceLandmarkerWithFallback(vision);
 
         if (isCancelled) {
           faceLandmarker.close();
@@ -204,6 +246,10 @@ export default function useEyeProctoring({ enabled }) {
 
         const loop = () => {
           if (isCancelled || !faceLandmarkerRef.current || !videoRef.current) return;
+          if (videoRef.current.readyState < 2) {
+            rafRef.current = requestAnimationFrame(loop);
+            return;
+          }
 
           const now = performance.now();
           const result = faceLandmarkerRef.current.detectForVideo(videoRef.current, now);
@@ -228,7 +274,8 @@ export default function useEyeProctoring({ enabled }) {
             }
           } else {
             const distractionScore = getEyeDistractionScore(face);
-            const looksAway = distractionScore > 0.62;
+            smoothedScoreRef.current = smoothedScoreRef.current * 0.75 + distractionScore * 0.25;
+            const looksAway = smoothedScoreRef.current > 0.52;
 
             if (looksAway) {
               if (!awayStartedAtRef.current) {
@@ -265,9 +312,17 @@ export default function useEyeProctoring({ enabled }) {
         };
 
         rafRef.current = requestAnimationFrame(loop);
-      } catch {
+      } catch (error) {
+        const message = String(error?.message || "").toLowerCase();
+        const isPermissionIssue =
+          message.includes("permission") ||
+          message.includes("notallowederror") ||
+          message.includes("denied");
+
         setPermissionError(
-          "Camera permission is required for interview proctoring. Please allow camera access."
+          isPermissionIssue
+            ? "Camera permission is required for interview proctoring. Please allow camera access."
+            : "Eye-tracking model failed to initialize. Check network and refresh the session."
         );
         setStatus("error");
       }

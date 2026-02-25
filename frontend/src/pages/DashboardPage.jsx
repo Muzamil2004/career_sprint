@@ -61,20 +61,54 @@ function DashboardPage() {
     95,
     45 + Math.min(recentSessions.length, 4) * 10 + (user?.email ? 10 : 0)
   );
-  const totalPracticeProblems = Object.keys(PROBLEMS).length;
-  const solvedPracticeProblems = (() => {
-    if (typeof window === "undefined") return 0;
+  const allProblems = Object.values(PROBLEMS);
+  const solvedProblemIds = (() => {
+    if (typeof window === "undefined") return [];
     try {
       const storedSolvedProblemIds = localStorage.getItem("solved-problem-ids");
       const parsedIds = storedSolvedProblemIds ? JSON.parse(storedSolvedProblemIds) : [];
-      return Array.isArray(parsedIds) ? parsedIds.length : 0;
+      return Array.isArray(parsedIds) ? parsedIds : [];
     } catch {
-      return 0;
+      return [];
     }
   })();
+  const solvedProblemIdsSet = new Set(solvedProblemIds);
+  const totalPracticeProblems = allProblems.length;
+  const solvedPracticeProblems = allProblems.filter((problem) => solvedProblemIdsSet.has(problem.id)).length;
   const practiceProgress = totalPracticeProblems
     ? Math.min(100, Math.round((solvedPracticeProblems / totalPracticeProblems) * 100))
     : 0;
+  const categoryProgressData = [
+    {
+      key: "aptitude",
+      label: "Aptitude",
+      total: allProblems.filter((problem) => problem.category.toLowerCase().includes("aptitude")).length,
+      solved: allProblems.filter(
+        (problem) =>
+          problem.category.toLowerCase().includes("aptitude") && solvedProblemIdsSet.has(problem.id)
+      ).length,
+    },
+    {
+      key: "system-design",
+      label: "System Design",
+      total: allProblems.filter((problem) => problem.category.toLowerCase().includes("system design")).length,
+      solved: allProblems.filter(
+        (problem) =>
+          problem.category.toLowerCase().includes("system design") && solvedProblemIdsSet.has(problem.id)
+      ).length,
+    },
+    {
+      key: "verbal",
+      label: "Verbal",
+      total: allProblems.filter((problem) => problem.category.toLowerCase().includes("verbal")).length,
+      solved: allProblems.filter(
+        (problem) => problem.category.toLowerCase().includes("verbal") && solvedProblemIdsSet.has(problem.id)
+      ).length,
+    },
+  ].map((item) => ({
+    ...item,
+    progress: item.total ? Math.min(100, Math.round((item.solved / item.total) * 100)) : 0,
+  }));
 
   const isUserInSession = (session) => {
     if (!currentUserId) return false;
@@ -202,6 +236,29 @@ function DashboardPage() {
                   />
                 </div>
                 <p className="mt-2 text-xs text-[var(--text-muted)]">{practiceProgress}% complete</p>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                {categoryProgressData.map((category) => (
+                  <div
+                    key={category.key}
+                    className="rounded-2xl border border-[var(--line)] bg-[var(--surface)]/75 p-4"
+                  >
+                    <div className="mb-2 flex items-center justify-between">
+                      <p className="text-xs font-semibold text-[var(--text-primary)]">{category.label}</p>
+                      <p className="text-xs font-semibold text-[var(--text-muted)]">
+                        {category.solved}/{category.total}
+                      </p>
+                    </div>
+                    <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-soft-3)]">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all"
+                        style={{ width: `${category.progress}%` }}
+                      />
+                    </div>
+                    <p className="mt-2 text-[11px] font-medium text-[var(--text-muted)]">{category.progress}%</p>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
