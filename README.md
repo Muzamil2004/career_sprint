@@ -126,4 +126,5 @@ docker compose down
 - Creates a built-in feedback loop with analytics and readiness tracking
 
 ## License
-ISC
+
+MIT
