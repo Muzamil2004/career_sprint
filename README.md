@@ -1,11 +1,11 @@
-# Talent-IQ
+# Career Sprint
 
 Full-stack interview preparation platform for coding, system design, aptitude, and verbal practice.
 
-![Talent-IQ Screenshot](./frontend/public/readme-screenshot.png)
+![Career Sprint Screenshot](./frontend/public/readme-screenshot.png)
 
 ## Overview
-Talent-IQ combines async practice and live mock interviews in one workflow so candidates can prepare end-to-end in a single product.
+Career Sprint combines async practice and live mock interviews in one workflow so candidates can prepare end-to-end in a single product.
 
 ## Quick Links
 - [Features](#features)
@@ -17,14 +17,19 @@ Talent-IQ combines async practice and live mock interviews in one workflow so ca
 - [API Snapshot](#api-snapshot)
 
 ## Features
-- Multi-category problem bank: Coding, System Design, Aptitude, Verbal
-- Monaco-based editor with language-aware starter templates (JavaScript, Python, Java)
-- Auto-check against expected outputs
-- Live 1:1 interview rooms with real-time video and chat
-- AI-generated post-session feedback
-- Session summaries with attempts, success rate, and score
-- Google OAuth + JWT authentication flow
-- Dashboard and profile analytics (accuracy, readiness meter, solved breakdown)
+- Multi-category preparation tracks: Coding, System Design, Aptitude, and Verbal
+- Monaco-based coding workspace with language-aware starter templates (JavaScript, Python, Java)
+- Manual run plus debounced auto-run with normalized output matching against expected results
+- Local solved-problem tracking with progress indicators by category and overall completion
+- Live 1:1 interview rooms with real-time Stream video + in-room chat
+- Flexible session creation: AI-random problem generation or manual setup, with focus and minimum difficulty controls
+- Interview guardrails: fullscreen enforcement, clipboard/context-menu blocking, and anti-shortcut protection
+- Eye-proctoring using MediaPipe face landmarks with warning/violation counters and temporary focus lock
+- Timed interview sessions with automatic host-end and persisted run statistics
+- AI-generated post-session coaching with concise tips and analysis tailored to interview focus
+- Session summaries capturing attempts, successful runs, accuracy, readiness, and proctoring risk signals
+- Dashboard + profile analytics (accuracy, streaks, readiness score, solved breakdown)
+- Auth system with JWT cookies and Google OAuth sign-in
 
 ## Tech Stack
 | Layer | Technologies |
@@ -39,7 +44,7 @@ Talent-IQ combines async practice and live mock interviews in one workflow so ca
 
 ## Project Structure
 ```text
-talent-IQ/
+Career Sprint/
   backend/              # Express API, auth, sessions, AI endpoints
   frontend/             # React app, pages, components, problem engine
   docker-compose.yml
@@ -128,3 +133,4 @@ docker compose down
 ## License
 
 MIT
+

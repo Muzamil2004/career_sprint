@@ -1,7 +1,7 @@
 services:
   mongo:
     image: mongo:7
-    container_name: talent-iq-mongo
+    container_name: career-sprint-mongo
     command: ["--bind_ip_all"]
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
@@ -15,7 +15,7 @@ services:
       - mongo-data:/data/db
     restart: unless-stopped
     networks:
-      - talent-iq-net
+      - career-sprint-net
 
   backend:
     build:
@@ -27,7 +27,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       CLIENT_URL: http://localhost:${FRONTEND_PORT:-8080}
-      DB_URL: mongodb://mongo:27017/talentiq
+      DB_URL: mongodb://mongo:27017/careersprint
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3000/health"]
       interval: 30s
@@ -46,7 +46,7 @@ services:
         max-file: "3"
     restart: unless-stopped
     networks:
-      - talent-iq-net
+      - career-sprint-net
     depends_on:
       mongo:
         condition: service_healthy
@@ -78,11 +78,12 @@ services:
         max-file: "3"
     restart: unless-stopped
     networks:
-      - talent-iq-net
+      - career-sprint-net
 
 networks:
-  talent-iq-net:
-    name: talent-iq-net
+  career-sprint-net:
+    name: career-sprint-net
 
 volumes:
   mongo-data:
+
