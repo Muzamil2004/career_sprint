@@ -138,10 +138,7 @@ docker compose down
 - `POST /api/sessions/:id/join`
 - `POST /api/sessions/:id/end`
 
-## Why It Stands Out
-- Unifies async practice and live interview simulation
-- Covers both technical and non-technical interview rounds
-- Creates a built-in feedback loop with analytics and readiness tracking
+
 
 ## License
 
