@@ -15,6 +15,19 @@ Career Sprint combines async practice and live mock interviews in one workflow s
 - [Local Development](#local-development)
 - [Docker Setup](#docker-setup)
 - [API Snapshot](#api-snapshot)
+- [Project Review Screenshots](#project-review-screenshots)
+
+## Project Review Screenshots
+![Project Review 1](./frontend/public/Screenshot%202026-02-28%20194650.png)
+![Project Review 2](./frontend/public/Screenshot%202026-02-28%20194850.png)
+![Project Review 3](./frontend/public/Screenshot%202026-02-28%20195017.png)
+![Project Review 4](./frontend/public/Screenshot%202026-02-28%20195108.png)
+![Project Review 5](./frontend/public/Screenshot%202026-02-28%20195146.png)
+![Project Review 6](./frontend/public/Screenshot%202026-02-28%20195224.png)
+![Project Review 7](./frontend/public/Screenshot%202026-02-28%20195253.png)
+![Project Review 8](./frontend/public/Screenshot%202026-02-28%20195328.png)
+![Project Review 9](./frontend/public/Screenshot%202026-02-28%20195418.png)
+![Project Review 10](./frontend/public/Screenshot%202026-02-28%20195538.png)
 
 ## Features
 - Multi-category preparation tracks: Coding, System Design, Aptitude, and Verbal
@@ -133,4 +146,7 @@ docker compose down
 ## License
 
 MIT
+
+
+
 
